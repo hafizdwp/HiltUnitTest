@@ -9,6 +9,8 @@ import com.example.hiltunittest.data.remote.RemoteApi
 import com.example.hiltunittest.data.remote.RemoteDataSource
 import com.example.hiltunittest.domain.usecase.GetPhotoUseCase
 import com.example.hiltunittest.domain.usecase.GetPhotoUsecaseImpl
+import com.example.hiltunittest.util.CoreDispatcher
+import com.example.hiltunittest.util.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +26,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Modules {
+
+    @Singleton
+    @Provides
+    fun provideDispatcher(): DispatcherProvider {
+        return CoreDispatcher()
+    }
 
     @Singleton
     @Provides

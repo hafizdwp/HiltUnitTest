@@ -4,6 +4,9 @@ import com.example.hiltunittest.data.Repository
 import com.example.hiltunittest.domain.model.ScreenPhoto
 import com.example.hiltunittest.util.DataState
 import com.example.hiltunittest.util.ResultSet
+import com.example.hiltunittest.util.getThreadName
+import com.example.hiltunittest.util.log
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -22,8 +25,8 @@ class GetPhotoUsecaseImpl @Inject constructor(
         private val repository: Repository
 ) : GetPhotoUseCase {
     override suspend fun execute(): Flow<DataState<List<ScreenPhoto>>> {
-
         return flow {
+//            log("(execute) usecase flow: ${getThreadName()}")
             emit(DataState.Loading)
             when (val response = repository.getPhoto()) {
                 is ResultSet.Success -> {

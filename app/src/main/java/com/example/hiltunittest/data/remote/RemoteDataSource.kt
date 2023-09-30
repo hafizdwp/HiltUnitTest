@@ -2,7 +2,9 @@ package com.example.hiltunittest.data.remote
 
 import com.example.hiltunittest.data.dto.PexelsResponse
 import com.example.hiltunittest.util.ResultSet
+import com.example.hiltunittest.util.getThreadName
 import com.example.hiltunittest.util.log
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 /**
@@ -14,11 +16,11 @@ class RemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getPhoto(): ResultSet<PexelsResponse> {
+//        delay(3_000)
+//        log("(getPhoto) dataSource: ${getThreadName()}")
         return try {
-            log("remote data source thread: ${Thread.currentThread().name}")
             ResultSet.Success(api.getRandomPhotos())
         } catch (e: Exception) {
-            e.printStackTrace()
             ResultSet.Error(e.message ?: "")
         }
     }

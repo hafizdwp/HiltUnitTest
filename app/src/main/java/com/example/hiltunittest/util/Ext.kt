@@ -13,6 +13,8 @@ import com.google.gson.reflect.TypeToken
  * 21/09/2023
  **/
 
+fun getThreadName() = Thread.currentThread().name
+
 fun log(msg: String,
         tag: String? = null) {
         Log.d(tag ?: "mytag", msg)

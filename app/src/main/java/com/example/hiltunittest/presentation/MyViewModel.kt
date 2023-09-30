@@ -4,15 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiltunittest.domain.model.ScreenPhoto
 import com.example.hiltunittest.domain.usecase.GetPhotoUseCase
-import com.example.hiltunittest.util.DataState
-import com.example.hiltunittest.util.SingleLiveEvent
-import com.example.hiltunittest.util.ViewState
-import com.example.hiltunittest.util.log
+import com.example.hiltunittest.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
@@ -22,16 +18,17 @@ import kotlin.system.measureTimeMillis
  **/
 @HiltViewModel
 class MyViewModel @Inject constructor(
-        val getPhotoUsecase: GetPhotoUseCase
+        val getPhotoUsecase: GetPhotoUseCase,
+        private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
     val eventViewState = SingleLiveEvent<ViewState>()
     val eventPhoto = SingleLiveEvent<List<ScreenPhoto>?>()
 
-
-    fun getPhoto() = viewModelScope.launch {
-        async(Dispatchers.IO) {
+    fun getPhoto() = viewModelScope.launch(dispatcher.io) {
+//        async(dispatcher.io) {
             getPhotoUsecase.execute().collect {
+//            log("(getPhoto) viewmodel collect: ${getThreadName()}")
                 when (it) {
                     is DataState.Loading -> {
                         eventViewState.postValue(ViewState.Loading)
@@ -52,8 +49,27 @@ class MyViewModel @Inject constructor(
                     }
                 }
             }
-        }.await()
+//        }.await()
+//        }
     }
+
+    val eventCountdown = SingleLiveEvent<Int>()
+
+    fun heavyOperation() = viewModelScope.launch {
+//        log("(heavyOperation) BEFORE ${getThreadName()}")
+//        heavyFlow().collect { countdown ->
+//            eventCountdown.value = countdown
+//        }
+//        log("(heavyOperation) AFTER ${getThreadName()}")
+    }
+
+    private fun heavyFlow() = flow<Int> {
+        repeat(10) {
+            delay(1000)
+            log("(heavyFlow) logging repeat $it, on ${getThreadName()}")
+            emit(it)
+        }
+    }.flowOn(Dispatchers.IO)
 
     fun getPhotoSync() = viewModelScope.launch {
         getPhotoUsecase.execute().collect {

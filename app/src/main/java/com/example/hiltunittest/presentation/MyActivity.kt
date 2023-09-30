@@ -1,6 +1,7 @@
 package com.example.hiltunittest.presentation
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -51,9 +52,14 @@ class MyActivity : AppCompatActivity() {
 
         observe()
 
+        viewModel.heavyOperation()
         supportFragmentManager.commit {
             replace(binding.frameLayout.id, MyFragment())
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
     }
 
     private fun openPlaystore() {
@@ -113,6 +119,10 @@ class MyActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(binding.imgView)
             index++
+        }
+
+        eventCountdown.observe(this@MyActivity) {
+            binding.countdown.text = it.toString()
         }
     }
 
