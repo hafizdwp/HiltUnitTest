@@ -1,9 +1,7 @@
-package com.example.hiltunittest
+package com.example.hiltunittest.util
 
-import com.example.hiltunittest.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 
 /**

@@ -1,10 +1,10 @@
-package com.example.hiltunittest.data.dto
+package com.example.hiltunittest.data.remote.dto
 
 /**
  * @author hafizdwp
  * 30/08/2023
  **/
-data class UnsplashResponse(
+data class UnsplashPhotoResponse(
         var id: String? = "",
         var slug: String? = "",
         var created_at: String? = "",

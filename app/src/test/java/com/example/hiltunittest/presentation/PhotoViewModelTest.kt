@@ -1,14 +1,13 @@
-package com.example.hiltunittest
+package com.example.hiltunittest.presentation
 
-import com.example.hiltunittest.domain.model.ScreenPhoto
+import com.example.hiltunittest.util.BaseTest
+import com.example.hiltunittest.domain.model.Photo
 import com.example.hiltunittest.domain.usecase.GetPhotoUseCase
-import com.example.hiltunittest.presentation.MyViewModel
-import com.example.hiltunittest.util.DataState
-import com.example.hiltunittest.util.ViewState
+import com.example.hiltunittest.util.state.DataState
+import com.example.hiltunittest.util.state.ViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -25,24 +24,37 @@ import org.mockito.MockitoAnnotations
  **/
 
 @ExperimentalCoroutinesApi
-class MyViewModelTest : BaseTest() {
+class PhotoViewModelTest : BaseTest() {
 
     @Mock
     private lateinit var getPhotoUseCase: GetPhotoUseCase
 
-    private lateinit var viewModel: MyViewModel
+    private lateinit var viewModel: PhotoViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        viewModel = MyViewModel(getPhotoUseCase, testDispatchers)
+        viewModel = PhotoViewModel(getPhotoUseCase, testDispatchers)
     }
 
     @Test
-    fun testGetPhoto_resultSuccess() = runTest {
+    fun getPhoto_loading() = runTest {
+        val dataStateLoading = DataState.Loading
+        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(dataStateLoading))
+
+        viewModel.getPhoto()
+
+        verify(getPhotoUseCase, times(1)).execute()
+        val loading = getPhotoUseCase.execute().first()
+
+        assertEquals(dataStateLoading::class, loading::class)
+    }
+
+    @Test
+    fun getPhoto_success() = runTest {
         val mockResponse = listOf(
-                ScreenPhoto("asd"),
-                ScreenPhoto("asd2")
+                Photo("asd"),
+                Photo("asd2")
         )
         val successState = ViewState.Success
         `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Success(mockResponse)))
@@ -57,7 +69,7 @@ class MyViewModelTest : BaseTest() {
     }
 
     @Test
-    fun testGetPhoto_resultError() = runTest {
+    fun getPhoto_error() = runTest {
         val errorMsg = "error"
         val expectedViewState = ViewState.Failed(errorMsg)
         `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Error(errorMsg)))
@@ -71,7 +83,7 @@ class MyViewModelTest : BaseTest() {
     }
 
     @Test
-    fun testGetPhoto_resultEmpty() = runTest {
+    fun getPhoto_empty() = runTest {
         val emptyMsg = "empty"
         val expectedViewState = ViewState.Empty(emptyMsg)
         `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Empty(emptyMsg)))
@@ -82,18 +94,5 @@ class MyViewModelTest : BaseTest() {
 
         assertEquals(viewModel.eventViewState.value!!::class, expectedViewState::class)
         assertEquals(viewModel.eventPhoto.value, null)
-    }
-
-    @Test
-    fun testGetPhoto_loading() = runTest {
-        val dataStateLoading = DataState.Loading
-        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(dataStateLoading))
-
-        viewModel.getPhoto()
-
-        verify(getPhotoUseCase, times(1)).execute()
-        val loading = getPhotoUseCase.execute().first()
-
-        assertEquals(dataStateLoading::class, loading::class)
     }
 }

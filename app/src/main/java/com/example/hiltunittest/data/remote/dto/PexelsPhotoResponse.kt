@@ -1,11 +1,11 @@
-package com.example.hiltunittest.data.dto
+package com.example.hiltunittest.data.remote.dto
 
 /**
  * @author hafizdwp
  * 22/09/2023
  **/
 
-data class PexelsResponse(
+data class PexelsPhotoResponse(
     val next_page: String,
     val page: Int,
     val per_page: Int,

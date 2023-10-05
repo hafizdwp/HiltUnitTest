@@ -4,6 +4,6 @@ package com.example.hiltunittest.domain.model
  * @author hafizdwp
  * 22/09/2023
  **/
-data class ScreenPhoto(
+data class Photo(
         val url: String
 )

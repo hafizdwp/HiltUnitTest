@@ -1,4 +1,4 @@
-package com.example.hiltunittest.util
+package com.example.hiltunittest.util.state
 
 /**
  * @author hafizdwp

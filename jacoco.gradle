@@ -1,0 +1,37 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.7" // Adjust version as needed
+}
+
+android {
+    testCoverage {
+        jacocoVersion = "0.8.7" // Adjust version as needed
+    }
+}
+
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn['testDebugUnitTest']
+
+    reports {
+//        xml.enabled = true
+//        html.enabled = true
+    }
+
+    def coverageSourceDirs = [
+            'src/main/java', // Change this if your main code is in a different directory
+            'src/main/kotlin' // Add this if your main code is in Kotlin
+    ]
+
+    sourceDirectories = files(coverageSourceDirs)
+    classDirectories = files("$buildDir/intermediates/javac/debug/classes")
+
+    executionData = files("$buildDir/jacoco/testDebugUnitTest.exec")
+
+    doFirst {
+        // Cleanup any previous data
+        delete fileTree(dir: project.buildDir, includes: [
+                'jacoco/testDebugUnitTest.exec', 'jacoco/testDebugUnitTest.exec'
+        ])
+    }
+}

@@ -3,4 +3,47 @@ plugins {
     id 'com.android.application' version '8.1.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
     id "com.google.dagger.hilt.android" version "2.44" apply false
+    id "jacoco"
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.withType(Test).tap {
+    configureEach {
+        jacoco {
+            includeNoLocationClasses = true // Robolectric support
+            excludes = [
+                    'jdk.internal.*', // Java compatibility
+                    'coil.compose.*'
+            ]
+        }
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL // Display the full log to identify Paparazzi test failures
+            showStackTraces = false
+        }
+        // Paparazzi screenshots Java compatibility: https://docs.gradle.org/current/userguide/toolchains.html#toolchains_for_tasks
+        javaLauncher = javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_11.toString())
+        }
+    }
+}
+
+class JacocoUtil {
+    static ConfigurableFileTree getKotlinFileTree(Project project) {
+        return project.fileTree(
+                // Where generated Kotlin classes are located
+                dir: "$project.buildDir/tmp/kotlin-classes/debug",
+                // Exclude everything that is not created by you, e.g. created by HILT
+                excludes: [
+                        '**/BuildConfig.*',
+                        '**/*$*',
+                        '**/Hilt_*.class',
+                        'hilt_**',
+                        'dagger/hilt/**',
+                        '**/*JsonAdapter.*'
+                ]
+        )
+    }
 }

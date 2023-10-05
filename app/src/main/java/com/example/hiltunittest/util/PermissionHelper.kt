@@ -1,9 +1,7 @@
-package com.example.hiltunittest
+package com.example.hiltunittest.util
 
 import android.Manifest
-import android.content.Context
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 

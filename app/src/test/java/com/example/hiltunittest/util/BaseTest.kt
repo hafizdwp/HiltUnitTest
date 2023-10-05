@@ -1,4 +1,4 @@
-package com.example.hiltunittest
+package com.example.hiltunittest.util
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule

@@ -8,7 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  * 21/09/2023
  **/
 @HiltAndroidApp
-class MyApp : Application() {
-
-
-}
+class MyApp : Application()

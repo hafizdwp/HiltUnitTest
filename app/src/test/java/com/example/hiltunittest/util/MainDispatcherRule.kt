@@ -1,4 +1,4 @@
-package com.example.hiltunittest
+package com.example.hiltunittest.util
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.Dispatchers

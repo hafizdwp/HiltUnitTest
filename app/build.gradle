@@ -7,6 +7,7 @@ plugins {
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
+//apply from: '../jacoco.gradle'
 
 android {
     namespace 'com.example.hiltunittest'
@@ -54,6 +55,51 @@ android {
             java.srcDirs = ['src/main/java']
             resources.srcDirs = ['src/main/res']
             test.java.srcDirs += 'src/test/java'
+        }
+    }
+
+    testOptions {
+        buildTypes {
+            // Jacoco config: It configures/enables createDebugCoverageReport task to be used in generateCodeCoverage task below
+            debug.testCoverageEnabled = true
+        }
+    }
+
+    // Jacoco - Generate reports: https://docs.gradle.org/current/userguide/jacoco_plugin.html#default_values_of_the_jacoco_task_extension
+    tasks.register('generateCodeCoverage', JacocoReport) {
+        dependsOn 'testDebugUnitTest'
+
+        sourceDirectories.from = file("${project.projectDir}/src/main/java") // main source set
+        classDirectories.from = files(JacocoUtil.getKotlinFileTree(project))
+        executionData.from = fileTree(dir: project.buildDir, includes: [
+                '**/*.exec' // unit tests
+        ])
+
+        // run unit tests and ui tests to generate code coverage report
+        reports {
+            html.required.set(true)
+            html.outputLocation = layout.buildDirectory.dir('reports/jacoco')
+            xml.required.set(true) // It's required for Sonar
+            xml.outputLocation.set(file("${project.buildDir}/reports/jacoco/jacoco.xml"))
+        }
+    }
+
+    // Jacoco - Verify violations: https://docs.gradle.org/current/userguide/jacoco_plugin.html#sec:jacoco_report_violation_rules
+    tasks.register('verifyCodeCoverage', JacocoCoverageVerification) {
+        dependsOn 'generateCodeCoverage'
+
+        sourceDirectories.from = file("${project.projectDir}/src/main/java") // main source set
+        classDirectories.from = files(JacocoUtil.getKotlinFileTree(project))
+        executionData.from = fileTree(dir: project.buildDir, includes: [
+                '**/*.exec' // unit tests
+        ])
+
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.3 // 30%
+                }
+            }
         }
     }
 }
@@ -118,6 +164,10 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.mockito:mockito-core:4.2.0"
     testImplementation "org.mockito:mockito-inline:4.1.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:5.1.0"
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
