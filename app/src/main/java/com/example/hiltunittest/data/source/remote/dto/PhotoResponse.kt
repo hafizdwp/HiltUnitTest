@@ -1,4 +1,4 @@
-package com.example.hiltunittest.data.remote.dto
+package com.example.hiltunittest.data.source.remote.dto
 
 /**
  * @author hafizdwp

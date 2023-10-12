@@ -1,4 +1,4 @@
-package com.example.hiltunittest.data.local.dto
+package com.example.hiltunittest.data.source.local.dto
 
 /**
  * @author hafizdwp

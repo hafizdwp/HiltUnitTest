@@ -1,6 +1,6 @@
-package com.example.hiltunittest.data.remote.api
+package com.example.hiltunittest.data.source.remote.api
 
-import com.example.hiltunittest.data.remote.dto.PexelsPhotoResponse
+import com.example.hiltunittest.data.source.remote.dto.PexelsPhotoResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 
