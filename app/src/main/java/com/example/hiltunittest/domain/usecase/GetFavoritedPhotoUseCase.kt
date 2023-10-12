@@ -13,6 +13,6 @@ import javax.inject.Inject
  * 22/09/2023
  **/
 
-fun interface GetPhotoUseCase {
+fun interface GetFavoritedPhotoUseCase {
     operator fun invoke(): Flow<DataState<List<Photo>>>
 }

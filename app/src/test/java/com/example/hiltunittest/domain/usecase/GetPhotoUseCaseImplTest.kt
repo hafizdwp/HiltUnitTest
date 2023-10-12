@@ -3,6 +3,7 @@ package com.example.hiltunittest.domain.usecase
 import com.example.hiltunittest.util.BaseTest
 import com.example.hiltunittest.domain.repository.PhotoRepository
 import com.example.hiltunittest.domain.model.Photo
+import com.example.hiltunittest.domain.usecase.implementation.GetPhotoUseCaseImpl
 import com.example.hiltunittest.util.state.DataState
 import com.example.hiltunittest.util.state.ResultSet
 import kotlinx.coroutines.ExperimentalCoroutinesApi

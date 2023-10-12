@@ -2,7 +2,7 @@ package com.example.hiltunittest.di
 
 import com.example.hiltunittest.domain.repository.PhotoRepository
 import com.example.hiltunittest.domain.usecase.GetPhotoUseCase
-import com.example.hiltunittest.domain.usecase.GetPhotoUseCaseImpl
+import com.example.hiltunittest.domain.usecase.implementation.GetPhotoUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
