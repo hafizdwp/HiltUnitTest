@@ -1,7 +1,7 @@
 package com.example.hiltunittest.data.repository
 
-import com.example.hiltunittest.data.local.PhotoLocalDataSource
-import com.example.hiltunittest.data.remote.PhotoRemoteDataSource
+import com.example.hiltunittest.data.local.source.PhotoLocalDataSource
+import com.example.hiltunittest.data.remote.source.PhotoRemoteDataSource
 import com.example.hiltunittest.domain.model.Photo
 import com.example.hiltunittest.domain.repository.PhotoRepository
 import com.example.hiltunittest.util.state.ResultSet

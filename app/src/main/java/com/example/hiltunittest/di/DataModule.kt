@@ -1,9 +1,9 @@
 package com.example.hiltunittest.di
 
 import com.example.hiltunittest.data.repository.PhotoRepositoryImpl
-import com.example.hiltunittest.data.local.PhotoLocalDataSource
-import com.example.hiltunittest.data.remote.PhotoRemoteApi
-import com.example.hiltunittest.data.remote.PhotoRemoteDataSource
+import com.example.hiltunittest.data.local.source.PhotoLocalDataSource
+import com.example.hiltunittest.data.remote.api.PhotoRemoteApi
+import com.example.hiltunittest.data.remote.source.PhotoRemoteDataSource
 import com.example.hiltunittest.domain.repository.PhotoRepository
 import dagger.Module
 import dagger.Provides

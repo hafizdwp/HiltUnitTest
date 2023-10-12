@@ -1,5 +1,6 @@
-package com.example.hiltunittest.data.remote
+package com.example.hiltunittest.data.remote.source
 
+import com.example.hiltunittest.data.remote.api.PhotoRemoteApi
 import com.example.hiltunittest.data.remote.dto.PexelsPhotoResponse
 import com.example.hiltunittest.util.state.ResultSet
 import javax.inject.Inject

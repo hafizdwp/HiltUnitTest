@@ -1,4 +1,4 @@
-package com.example.hiltunittest.data.remote
+package com.example.hiltunittest.data.remote.api
 
 import com.example.hiltunittest.data.remote.dto.PexelsPhotoResponse
 import retrofit2.http.GET
