@@ -1,8 +1,8 @@
 package com.example.hiltunittest.presentation
 
-import com.example.hiltunittest.util.BaseTest
 import com.example.hiltunittest.domain.model.Photo
 import com.example.hiltunittest.domain.usecase.GetPhotoUseCase
+import com.example.hiltunittest.util.BaseTest
 import com.example.hiltunittest.util.state.DataState
 import com.example.hiltunittest.util.state.ViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,12 +40,12 @@ class PhotoViewModelTest : BaseTest() {
     @Test
     fun getPhoto_loading() = runTest {
         val dataStateLoading = DataState.Loading
-        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(dataStateLoading))
+        `when`(getPhotoUseCase.invoke()).thenReturn(flowOf(dataStateLoading))
 
         viewModel.getPhoto()
 
-        verify(getPhotoUseCase, times(1)).execute()
-        val loading = getPhotoUseCase.execute().first()
+        verify(getPhotoUseCase, times(1)).invoke()
+        val loading = getPhotoUseCase.invoke().first()
 
         assertEquals(dataStateLoading::class, loading::class)
     }
@@ -57,11 +57,11 @@ class PhotoViewModelTest : BaseTest() {
                 Photo("asd2")
         )
         val successState = ViewState.Success
-        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Success(mockResponse)))
+        `when`(getPhotoUseCase.invoke()).thenReturn(flowOf(DataState.Success(mockResponse)))
 
         viewModel.getPhoto()
 
-        verify(getPhotoUseCase, times(1)).execute()
+        verify(getPhotoUseCase, times(1)).invoke()
 
         assertEquals(viewModel.eventViewState.value!!::class, successState::class)
 //        assertEquals(viewModel.eventViewState.value, null)
@@ -72,11 +72,11 @@ class PhotoViewModelTest : BaseTest() {
     fun getPhoto_error() = runTest {
         val errorMsg = "error"
         val expectedViewState = ViewState.Failed(errorMsg)
-        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Error(errorMsg)))
+        `when`(getPhotoUseCase.invoke()).thenReturn(flowOf(DataState.Error(errorMsg)))
 
         viewModel.getPhoto()
 
-        verify(getPhotoUseCase, times(1)).execute()
+        verify(getPhotoUseCase, times(1)).invoke()
 
         assertEquals(viewModel.eventViewState.value!!::class, expectedViewState::class)
         assertEquals(viewModel.eventPhoto.value, null)
@@ -86,11 +86,11 @@ class PhotoViewModelTest : BaseTest() {
     fun getPhoto_empty() = runTest {
         val emptyMsg = "empty"
         val expectedViewState = ViewState.Empty(emptyMsg)
-        `when`(getPhotoUseCase.execute()).thenReturn(flowOf(DataState.Empty(emptyMsg)))
+        `when`(getPhotoUseCase.invoke()).thenReturn(flowOf(DataState.Empty(emptyMsg)))
 
         viewModel.getPhoto()
 
-        verify(getPhotoUseCase, times(1)).execute()
+        verify(getPhotoUseCase, times(1)).invoke()
 
         assertEquals(viewModel.eventViewState.value!!::class, expectedViewState::class)
         assertEquals(viewModel.eventPhoto.value, null)

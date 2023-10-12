@@ -40,7 +40,7 @@ class GetPhotoUseCaseImplTest : BaseTest() {
         ))
         whenever(repository.getPhoto()).thenReturn(mockResult)
 
-        val flowList = useCase.execute().toList()
+        val flowList = useCase.invoke().toList()
         assertEquals(flowList.size, 2)
         assertEquals(flowList[0]::class, DataState.Loading::class)
         assertEquals(flowList[1]::class, DataState.Success::class)
